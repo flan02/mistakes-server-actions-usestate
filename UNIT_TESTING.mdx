@@ -1,0 +1,90 @@
+Exacto 🚀 — si querés testear componentes en un proyecto Next.js (incluyendo los que llevan "use client"), vos como programador tenés que montar tu setup de testing. Next.js no trae por defecto un sistema de tests unitarios. Lo que se suele hacer (y lo que te recomiendo) es usar Vitest + React Testing Library (RTL), porque son rápidos y muy cómodos para proyectos modernos, aunque también existe la alternativa de Jest.
+
+👉 Para usar Vitest + RTL en Next.js en 2025, lo que deberías instalar es:
+
+# Testing
+
+```bash
+npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event
+```
+
+# Para simular entorno DOM
+
+```bash
+npm install -D jsdom
+```
+
+# (Opcional pero recomendado)
+
+```bash
+npm install -D @vitejs/plugin-react
+```
+
+1. Configuración de Vitest
+
+Creás un archivo vitest.config.ts en la raíz de tu proyecto con algo así:
+
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    environment: "jsdom", // simula el DOM para RTL
+    globals: true, // permite usar describe, it, expect sin importar
+    setupFiles: "./vitest.setup.ts", // archivo para configuraciones globales
+  },
+});
+
+2. Archivo de setup (vitest.setup.ts)
+   import "@testing-library/jest-dom"; // matchers extra: toBeInTheDocument, etc.
+
+3. Ejemplo de test para un componente "use client"
+
+Supongamos un botón:
+
+```ts
+// Button.tsx
+"use client";
+
+export function Button({ label }: { label: string }) {
+  return <button>{label}</button>;
+}
+
+Test: import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { Button } from "./Button";
+
+describe("Button", () => {
+  it("renderiza el texto correctamente", () => {
+    render(<Button label="Click me" />);
+    expect(screen.getByText("Click me")).toBeInTheDocument();
+  });
+});
+```
+
+4. Correr tests
+
+```bash
+npx vitest
+```
+
+o en modo UI (muy cómodo):
+
+```bash
+npx vitest --ui
+```
+
+## Explicacion
+
+vitest → framework de testing.
+
+@vitejs/plugin-react → para que Vitest entienda JSX/TSX.
+
+jsdom → simula el DOM en Node.
+
+@testing-library/react → testear componentes de React.
+
+@testing-library/jest-dom → matchers extra (toBeInTheDocument(), toHaveTextContent()).
+
+@testing-library/user-event → simular clicks, inputs, etc.
+
+@types/... → tipados para TypeScript.
