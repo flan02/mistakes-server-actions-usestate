@@ -18,7 +18,7 @@ export function useComments() {
     // queryFn: ({ pageParam }) => getComments(pageParam) // ! Mistake 5: Never use a server action to fetch data
     queryFn: ({ pageParam }: { pageParam: any }) =>
       ky
-        .get(`/api/comments?${pageParam ? `cursor=${pageParam}` : ""}`) // ? Instead use an API route handler
+        .get(`/api/comments?${pageParam ? `cursor=${pageParam}` : ""}`) // ? Instead make a request to an endpoint
         .json<GetCommentsResponse>(),
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
