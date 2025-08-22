@@ -25,7 +25,7 @@ export default function Page() {
 }
 
 async function CommentsList() {
-  // Artificial delay to pretend we're fetching from a database
+  // * Artificial delay to pretend we're fetching from a database
   await delay(2000);
 
   const comments = await db.findComments({
