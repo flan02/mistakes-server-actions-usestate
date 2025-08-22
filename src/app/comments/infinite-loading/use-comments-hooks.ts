@@ -8,15 +8,17 @@ import {
 } from "@tanstack/react-query";
 import ky from "ky";
 import { createComment } from "./actions";
+//import { getComments } from "./actions";
 
 const queryKey: QueryKey = ["comments"];
 
 export function useComments() {
   return useInfiniteQuery({
     queryKey,
+    // queryFn: ({ pageParam }) => getComments(pageParam) // ! Mistake 5: Never use a server action to fetch data
     queryFn: ({ pageParam }: { pageParam: any }) =>
       ky
-        .get(`/api/comments?${pageParam ? `cursor=${pageParam}` : ""}`)
+        .get(`/api/comments?${pageParam ? `cursor=${pageParam}` : ""}`) // ? Instead use an API route handler
         .json<GetCommentsResponse>(),
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,

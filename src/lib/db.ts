@@ -15,6 +15,7 @@ type CreateCommentParams = {
 // This file mimics the internals of an ORM like Prisma or Drizzle. You don't need to understand the code in here.
 
 export const db = {
+
   async findComments({
     take,
     cursor,

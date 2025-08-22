@@ -8,8 +8,8 @@ export interface User {
 }
 
 const fakeUser: User = {
-  name: "Florian Walther",
-  avatar: "FW",
+  name: "Dan Chanivet",
+  avatar: "DC",
 };
 
 // For server-side calls

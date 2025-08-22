@@ -8,6 +8,7 @@ export type GetCommentsResponse = {
   nextCursor?: number;
 };
 
+// TODO: Use API route handler to fetch data in client-side
 export async function GET(request: NextRequest) {
   const cursorParam = request.nextUrl.searchParams.get("cursor");
   const cursor = cursorParam ? parseInt(cursorParam) : undefined;

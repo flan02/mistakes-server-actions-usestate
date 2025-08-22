@@ -8,10 +8,7 @@ import { createCommentSchema } from "../../schema";
 
 type FormState = { text: string; error: string } | undefined;
 
-export async function createComment(
-  prevState: FormState,
-  formData: FormData
-): Promise<FormState> {
+export async function createComment(_prevState: FormState, formData: FormData): Promise<FormState> {
   try {
     // Artificial delay to pretend we're connecting to the database
     await delay(700);

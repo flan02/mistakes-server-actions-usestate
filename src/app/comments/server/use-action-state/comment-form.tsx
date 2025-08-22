@@ -6,6 +6,8 @@ import { useActionState } from "react";
 import { createComment } from "./actions";
 
 export default function CommentForm() {
+  // useActionState is like a combination of useState and useEffect for handling form actions and user mutations
+  // Returns a tuple with the current form state, a function to submit the form, and a loading state
   const [state, formAction, pending] = useActionState(createComment, undefined);
 
   return (

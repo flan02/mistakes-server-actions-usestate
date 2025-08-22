@@ -10,19 +10,7 @@ const Page = (props: Props) => {
     <main className="container mx-auto max-w-4xl space-y-8 px-4 py-10">
       <header className="space-y-3 text-center">
         <h1 className="text-3xl font-bold">Common Server Action Mistakes</h1>
-        <p className="text-muted-foreground mx-auto max-w-2xl">
-          This demo app showcases common developer mistakes when using server
-          actions in Next.js and React 19. Watch the video on the{" "}
-          <a
-            href="https://www.youtube.com/c/codinginflow?sub_confirmation=1"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#4daa57] hover:underline"
-          >
-            Coding in Flow YouTube channel
-          </a>
-          .
-        </p>
+
       </header>
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -79,8 +67,8 @@ const Page = (props: Props) => {
           <li>Mistake 1: Not wrapping client-side server actions calls into transitions (useTransition, revalidatePath)</li>
           <li>Mistake 2: Not validating the user input server-side</li>
           <li>Mistake 3: Not authenticating the user server-side</li>
-          <li></li>
-          <li></li>
+          <li>Mistake 4: Not returning errors correctly</li>
+          <li>Mistake 5: Using server actions to fetch data</li>
         </ul>
       </article>
     </main>
