@@ -11,19 +11,39 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getInitials } from "./get-initials";
 
 export default function Page() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
-  // 🔴 Bad: Redundant state and unnecessary Effect.
-  const [fullName, setFullName] = useState("");
+  // !🔴 Bad: Redundant state and unnecessary Effect.
+  //const [fullName, setFullName] = useState("");
+  // useEffect(() => {
+  //   setFullName(firstName + " " + lastName);
+  // }, [firstName, lastName]);
 
-  useEffect(() => {
-    setFullName(firstName + " " + lastName);
-  }, [firstName, lastName]);
+  //$ Before react19 we should implement useMemo to memoize derived state. React19 applies useMemo automatically
+  //const fullName = useMemo(() => firstName + " " + lastName, [firstName, lastName]);
+
+  // ?✅ Good: Calculate the full name during rendering.
+  const fullName = firstName + " " + lastName;
+
+  // ?✅ Also for function calls:
+  // -⚠️ Before React 19 Compiler, expensive operations should be wrapped in useMemo.
+  const initials = getInitials(firstName, lastName);
+  // | Expensive ops with useMemo (not required anymore)
+  //const memoizedInitials = useMemo(() => initials, [firstName, lastName]);
+
+  // ?✅ Also for map, filter, etc.
+  const lastNameAnonymized = lastName
+    .split("")
+    .map((char, index) => (index < 2 ? char : "*"))
+    .join("");
 
   console.count("Page rendered");
+
+
 
   return (
     <div className="max-w-xl mx-auto p-4 space-y-8">
@@ -73,6 +93,17 @@ export default function Page() {
           <div className="mt-6 space-y-4 text-center">
             <p className="text-lg font-semibold">
               Full Name: <span className="text-primary">{fullName}</span>
+            </p>
+
+            <p className="text-lg font-semibold">
+              Initials: <span className="text-primary">{initials}</span>
+            </p>
+
+            <p className="text-lg font-semibold">
+              Anonymized Name:{" "}
+              <span className="text-primary">
+                {firstName + " " + lastNameAnonymized}
+              </span>
             </p>
           </div>
         </CardContent>

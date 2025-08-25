@@ -14,6 +14,8 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
+// TODO: We should use a library like react hook form. It makes easier how we handle forms and validations.
+
 interface FormData {
   firstName: string;
   lastName: string;
@@ -33,6 +35,41 @@ const initialFormData: FormData = {
 };
 
 export default function Page() {
+  // !🔴 Bad: Using multiple useState hooks for each form field.
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [zipCode, setZipCode] = useState("");
+
+  // !👎 This approach leads to repetitive code and is harder to manage.
+  const handleSubmitBad = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      street,
+      city,
+      zipCode,
+    };
+    alert("Form submitted: " + JSON.stringify(formData, null, 2));
+  };
+  const handleResetBad = () => {
+    // !👎 Managing separate state variables is complex and error-prone.
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setStreet("");
+    setCity("");
+    setZipCode("");
+  };
+
+  const isFormValidBad = [firstName, lastName, email, street, city, zipCode].every(
+    (value) => value.trim() !== ""
+  );
+
   // ✅ Good: Using a single useState hook with an object.
   const [formData, setFormData] = useState<FormData>(initialFormData);
 
@@ -89,8 +126,8 @@ export default function Page() {
                 <Input
                   id="firstName"
                   name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
+                  value={formData.firstName} // value={firstName}
+                  onChange={handleChange} // onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Enter first name"
                 />
               </div>
@@ -99,8 +136,8 @@ export default function Page() {
                 <Input
                   id="lastName"
                   name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
+                  value={formData.lastName} // value={lastName}
+                  onChange={handleChange} // onChange={(e) => setLastName(e.target.value)}
                   placeholder="Enter last name"
                 />
               </div>
@@ -112,8 +149,8 @@ export default function Page() {
                 id="email"
                 name="email"
                 type="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={formData.email} // value={email}
+                onChange={handleChange} // onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter email address"
               />
             </div>
@@ -123,8 +160,8 @@ export default function Page() {
               <Input
                 id="street"
                 name="street"
-                value={formData.street}
-                onChange={handleChange}
+                value={formData.street} // value={street}
+                onChange={handleChange} // onChange={(e) => setStreet(e.target.value)}
                 placeholder="Enter street address"
               />
             </div>
@@ -135,8 +172,8 @@ export default function Page() {
                 <Input
                   id="city"
                   name="city"
-                  value={formData.city}
-                  onChange={handleChange}
+                  value={formData.city} // value={city}
+                  onChange={handleChange} // onChange={(e) => setCity(e.target.value)}
                   placeholder="Enter city"
                 />
               </div>
@@ -145,8 +182,8 @@ export default function Page() {
                 <Input
                   id="zipCode"
                   name="zipCode"
-                  value={formData.zipCode}
-                  onChange={handleChange}
+                  value={formData.zipCode} // value={zipCode}
+                  onChange={handleChange} // onChange={(e) => setZipCode(e.target.value)}
                   placeholder="Enter zip code"
                 />
               </div>
